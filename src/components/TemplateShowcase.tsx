@@ -1,10 +1,12 @@
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { LayoutTemplate, X } from "lucide-react";
+import { LayoutTemplate, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { sampleResumeData } from "@/data/sample-resume";
+
+// ✅ Template imports (All imports)
 import ModernTemplate from "@/components/templates/ModernTemplate";
 import ClassicTemplate from "@/components/templates/ClassicTemplate";
 import CreativeTemplate from "@/components/templates/CreativeTemplate";
@@ -43,457 +45,264 @@ import DataScienceTemplate from "@/components/templates/DataScienceTemplate";
 import CybersecurityTemplate from "@/components/templates/CybersecurityTemplate";
 import { ProfessionalTemplate } from "@/components/templates/ProfessionalTemplate";
 
-const TemplatePreview = ({ children }: { children: React.ReactNode }) => (
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-    <div className="transform scale-[0.24] origin-center">
-      <div className="w-[816px] h-[1056px] bg-white shadow-md">
-        {children}
-      </div>
-    </div>
-  </div>
-);
+// Helper type for the template data structure
+type TemplateType = {
+  name: string;
+  description: string;
+  component: React.ComponentType<{ data: any; isEditing: boolean }>;
+};
 
-const templates = [
-  {
-    name: 'Modern',
-    description: 'Clean and professional.',
-    preview: (
-      <TemplatePreview>
-        <ModernTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Professional',
-    description: 'Two-column sidebar layout.',
-    preview: (
-      <TemplatePreview>
-        <ProfessionalTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Classic',
-    description: 'A timeless, traditional format.',
-    preview: (
-      <TemplatePreview>
-        <ClassicTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Creative',
-    description: 'For roles where personality shines.',
-    preview: (
-      <TemplatePreview>
-        <CreativeTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Minimal',
-    description: 'Simple, clean, and elegant.',
-    preview: (
-      <TemplatePreview>
-        <MinimalTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Executive',
-    description: 'Confident and leadership-focused.',
-    preview: (
-      <TemplatePreview>
-        <ExecutiveTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Tech',
-    description: 'Perfect for developers and engineers.',
-    preview: (
-      <TemplatePreview>
-        <TechTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Academic',
-    description: 'Research and academia focused.',
-    preview: (
-      <TemplatePreview>
-        <AcademicTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Healthcare',
-    description: 'Medical professionals.',
-    preview: (
-      <TemplatePreview>
-        <HealthcareTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Legal',
-    description: 'Law and legal professionals.',
-    preview: (
-      <TemplatePreview>
-        <LegalTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Sales',
-    description: 'Sales and business development.',
-    preview: (
-      <TemplatePreview>
-        <SalesTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Marketing',
-    description: 'Marketing professionals.',
-    preview: (
-      <TemplatePreview>
-        <MarketingTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Finance',
-    description: 'Financial sector professionals.',
-    preview: (
-      <TemplatePreview>
-        <FinanceTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Consulting',
-    description: 'Management consultants.',
-    preview: (
-      <TemplatePreview>
-        <ConsultingTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Education',
-    description: 'Teachers and educators.',
-    preview: (
-      <TemplatePreview>
-        <EducationTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Non-Profit',
-    description: 'Social impact organizations.',
-    preview: (
-      <TemplatePreview>
-        <NonProfitTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Startup',
-    description: 'Entrepreneurial roles.',
-    preview: (
-      <TemplatePreview>
-        <StartupTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Retail',
-    description: 'Customer service focused.',
-    preview: (
-      <TemplatePreview>
-        <RetailTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Hospitality',
-    description: 'Hotels and restaurants.',
-    preview: (
-      <TemplatePreview>
-        <HospitalityTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Manufacturing',
-    description: 'Industrial professionals.',
-    preview: (
-      <TemplatePreview>
-        <ManufacturingTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Media',
-    description: 'Creative media professionals.',
-    preview: (
-      <TemplatePreview>
-        <MediaTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Government',
-    description: 'Public sector roles.',
-    preview: (
-      <TemplatePreview>
-        <GovernmentTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Engineering',
-    description: 'Engineering professionals.',
-    preview: (
-      <TemplatePreview>
-        <EngineeringTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Architecture',
-    description: 'Architects and designers.',
-    preview: (
-      <TemplatePreview>
-        <ArchitectureTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Freelancer',
-    description: 'Independent contractors.',
-    preview: (
-      <TemplatePreview>
-        <FreelancerTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Intern',
-    description: 'Students and interns.',
-    preview: (
-      <TemplatePreview>
-        <InternTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Remote',
-    description: 'Remote work specialists.',
-    preview: (
-      <TemplatePreview>
-        <RemoteTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'International',
-    description: 'Global professionals.',
-    preview: (
-      <TemplatePreview>
-        <InternationalTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Science',
-    description: 'Research scientists.',
-    preview: (
-      <TemplatePreview>
-        <ScienceTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Artistic',
-    description: 'Artists and creatives.',
-    preview: (
-      <TemplatePreview>
-        <ArtisticTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Sports',
-    description: 'Athletic professionals.',
-    preview: (
-      <TemplatePreview>
-        <SportsTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Veteran',
-    description: 'Military veterans.',
-    preview: (
-      <TemplatePreview>
-        <VeteranTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Entry Level',
-    description: 'Recent graduates.',
-    preview: (
-      <TemplatePreview>
-        <EntryLevelTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Career Change',
-    description: 'Career transition.',
-    preview: (
-      <TemplatePreview>
-        <CareerChangeTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'C-Suite',
-    description: 'Executive leadership.',
-    preview: (
-      <TemplatePreview>
-        <ExecutiveCTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Data Science',
-    description: 'Data professionals.',
-    preview: (
-      <TemplatePreview>
-        <DataScienceTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
-  {
-    name: 'Cybersecurity',
-    description: 'Security experts.',
-    preview: (
-      <TemplatePreview>
-        <CybersecurityTemplate data={sampleResumeData} isEditing={false} />
-      </TemplatePreview>
-    ),
-  },
+// Map of template names to their components for easy lookup
+const TemplateComponents: Record<string, React.ComponentType<{ data: any; isEditing: boolean }>> = {
+    Modern: ModernTemplate,
+    Professional: ProfessionalTemplate,
+    Classic: ClassicTemplate,
+    Creative: CreativeTemplate,
+    Minimal: MinimalTemplate,
+    Executive: ExecutiveTemplate,
+    Tech: TechTemplate,
+    Academic: AcademicTemplate,
+    Healthcare: HealthcareTemplate,
+    Legal: LegalTemplate,
+    Sales: SalesTemplate,
+    Marketing: MarketingTemplate,
+    Finance: FinanceTemplate,
+    Consulting: ConsultingTemplate,
+    Education: EducationTemplate,
+    'Non-Profit': NonProfitTemplate,
+    Startup: StartupTemplate,
+    Retail: RetailTemplate,
+    Hospitality: HospitalityTemplate,
+    Manufacturing: ManufacturingTemplate,
+    Media: MediaTemplate,
+    Government: GovernmentTemplate,
+    Engineering: EngineeringTemplate,
+    Architecture: ArchitectureTemplate,
+    Freelancer: FreelancerTemplate,
+    Intern: InternTemplate,
+    Remote: RemoteTemplate,
+    International: InternationalTemplate,
+    Science: ScienceTemplate,
+    Artistic: ArtisticTemplate,
+    Sports: SportsTemplate,
+    Veteran: VeteranTemplate,
+    'Entry Level': EntryLevelTemplate,
+    'Career Change': CareerChangeTemplate,
+    'C-Suite': ExecutiveCTemplate,
+    'Data Science': DataScienceTemplate,
+    Cybersecurity: CybersecurityTemplate,
+};
+
+// ✅ Template list
+const templates: TemplateType[] = [
+  ...Object.keys(TemplateComponents).map(name => ({
+    name,
+    description: name === 'Modern' ? "Clean and professional." : `A ${name.toLowerCase()} template.`,
+    component: TemplateComponents[name],
+  })),
 ];
 
+
+// ✅ FIXED TemplatePreview Component
+const TemplatePreview = ({ children, scale, isCardPreview }: { children: React.ReactNode, scale: number, isCardPreview: boolean }) => {
+  
+  // Use centering logic for the card preview (from your 2nd example)
+  const positionClasses = isCardPreview
+    ? "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+    : "absolute top-0 left-0"; // Use top-left for the scrollable modal preview
+
+  // Use origin-center for the card, origin-top-left for the modal
+  const originClass = isCardPreview ? "origin-center" : "origin-top-left";
+
+  return (
+    <div className={positionClasses}>
+      {/* FIX: We use an inline style for scale. This guarantees the dynamic
+        scale value is applied, bypassing any Tailwind JIT build issues.
+      */}
+      <div 
+        className={`transform ${originClass}`} 
+        style={{ transform: `scale(${scale})` }}
+      >
+        <div className="w-[816px] h-[1056px] bg-white shadow-md overflow-hidden">{children}</div>
+      </div>
+    </div>
+  )
+};
+
+// ✅ TemplateShowcase component (From your first file)
 const TemplateShowcase = () => {
-  const [selectedTemplate, setSelectedTemplate] = useState<typeof templates[0] | null>(null);
+  const [selectedTemplateName, setSelectedTemplateName] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleTemplateClick = (template: typeof templates[0]) => {
-    setSelectedTemplate(template);
+  const selectedTemplate = useMemo(() => {
+    const index = templates.findIndex(t => t.name === selectedTemplateName);
+    return index !== -1 ? { ...templates[index], index } : null;
+  }, [selectedTemplateName]);
+
+  const handleTemplateClick = (template: TemplateType) => {
+    setSelectedTemplateName(template.name);
   };
 
   const handleStartWithTemplate = () => {
     if (selectedTemplate) {
-      navigate('/resume-builder', { state: { templateName: selectedTemplate.name } });
+      navigate("/resume-builder", { state: { templateName: selectedTemplate.name } });
     }
   };
+
+  const handleNavigation = (direction: 'next' | 'prev') => {
+    if (selectedTemplate) {
+      let newIndex = selectedTemplate.index;
+      if (direction === 'next') {
+        newIndex = Math.min(newIndex + 1, templates.length - 1);
+      } else {
+        newIndex = Math.max(newIndex - 1, 0);
+      }
+      setSelectedTemplateName(templates[newIndex].name);
+    }
+  };
+
+  const TemplateComponent = selectedTemplate ? selectedTemplate.component : null;
+  
+  // Use the 0.24 scale from your second example for the card
+  const CARD_PREVIEW_SCALE = 0.24; 
+  const MODAL_PREVIEW_SCALE = 0.85; // Keep the larger scale for the modal
 
   return (
     <section className="py-24 bg-slate-50">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <div className="inline-flex items-center space-x-2 bg-blue-100 border border-blue-200 px-4 py-2 rounded-full mb-6">
-            <img src="/upscalemedia-transformed.png" alt="Resume Pilot" className="w-5 h-5" />
+            <LayoutTemplate className="w-5 h-5 text-blue-700" />
             <span className="text-blue-700 font-medium text-sm">
               Professionally Designed Templates
             </span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
-            Find a Template That Helps You Soar
+            Find a Style That Fits You
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Choose from 33+ professionally designed templates that help your resume take flight. 
-            Each template is ATS-optimized and fully customizable to match your career journey.
+            Choose from {templates.length}+ professionally designed templates that help your resume take flight.
+            Each template is ATS-optimized and fully customizable.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* ✅ Grid View (Matches your desired 3-col layout) */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {templates.map((template) => (
-            <Card 
-              key={template.name} 
-              className="overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group transform hover:-translate-y-2 cursor-pointer"
+            <Card
+              key={template.name}
+              className="overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
               onClick={() => handleTemplateClick(template)}
             >
-              <div className="h-48 bg-gray-200 border-b border-gray-300 overflow-hidden relative">
-                {template.preview}
+              {/* This container uses h-64 and relative, as in your 2nd example */}
+              <div className="h-64 bg-gray-200 border-b border-gray-300 overflow-hidden relative">
+                <TemplatePreview scale={CARD_PREVIEW_SCALE} isCardPreview={true}>
+                  <template.component data={sampleResumeData} isEditing={false} />
+                </TemplatePreview>
               </div>
-              <CardContent className="p-4 text-center">
-                <CardTitle className="text-lg mb-1">{template.name}</CardTitle>
-                <CardDescription className="text-sm">{template.description}</CardDescription>
+              
+              {/* Card Content Styling (Matches your desired style) */}
+              <CardContent className="p-6 text-center">
+                <CardTitle className="text-xl mb-2">{template.name}</CardTitle>
+                <CardDescription>
+                  {template.description}
+                </CardDescription>
               </CardContent>
             </Card>
           ))}
         </div>
-        
+
         <div className="text-center mt-12">
-          <p className="text-lg text-gray-600 mb-6">
-            Can't find the perfect template? Our AI-powered builder adapts to any industry or role.
-          </p>
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            onClick={() => navigate("/resume-builder")}
           >
-            Start Building Your Resume
+            Start Building Your Resume (No Template)
           </Button>
         </div>
       </div>
 
-      {/* Template Preview Modal */}
-      <Dialog open={!!selectedTemplate} onOpenChange={() => setSelectedTemplate(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] w-full">
-          <div className="relative">
-            <button
-              onClick={() => setSelectedTemplate(null)}
-              className="absolute right-3 top-3 z-50 bg-white rounded-full p-1.5 hover:bg-gray-100"
-            >
-              <X className="w-4 h-4" />
-            </button>
-
-            {selectedTemplate && (
-              <div>
-                <div className="h-[600px] bg-gray-100 border-b relative overflow-hidden">
-                  <div className="w-full h-full scale-100 transform flex items-center justify-center">
-                    {selectedTemplate.preview}
-                  </div>
-                </div>
-
-                <div className="p-4 bg-white">
-                  <h3 className="text-xl font-semibold mb-2">
-                    {selectedTemplate.name} Template
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-6">
+      {/* ✅ Modal Layout (Unchanged) */}
+      <Dialog open={!!selectedTemplate} onOpenChange={() => setSelectedTemplateName(null)}>
+        <DialogContent className="max-w-6xl max-h-[95vh] h-full p-0 overflow-hidden">
+          {selectedTemplate && TemplateComponent && (
+            <div className="flex h-full">
+              
+              {/* 1. Left Sidebar: Template Info and Buttons */}
+              <div className="w-96 flex-shrink-0 p-8 border-r flex flex-col justify-between bg-white">
+                <div>
+                  <h3 className="text-3xl font-bold text-gray-900 mb-2">{selectedTemplate.name}</h3>
+                  <p className="text-gray-500 text-sm mb-6">
+                    Template {selectedTemplate.index + 1} of {templates.length}
+                  </p>
+                  
+                  <p className="text-gray-700 text-lg">
                     {selectedTemplate.description}
                   </p>
+                  <p className="text-sm text-gray-500 mt-4">
+                    This template is designed for **ATS compatibility** and is fully customizable in the builder.
+                  </p>
+                </div>
 
+                {/* 2. Bottom Action Buttons */}
+                <div className="mt-8 pt-4 border-t">
+                  <div className="flex space-x-4 mb-4">
+                    <Button 
+                      variant="outline"
+                      onClick={() => handleNavigation('prev')}
+                      disabled={selectedTemplate.index === 0}
+                      className="flex-1"
+                    >
+                      <ChevronLeft className="w-4 h-4 mr-2" />
+                      Previous
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      onClick={() => handleNavigation('next')}
+                      disabled={selectedTemplate.index === templates.length - 1}
+                      className="flex-1"
+                    >
+                      Next
+                      <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </div>
+                  
                   <Button
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                    size="lg"
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                     onClick={handleStartWithTemplate}
                   >
                     Build with this template
                   </Button>
                 </div>
               </div>
-            )}
-          </div>
+
+              {/* 3. Right Preview Area */}
+              <div className="flex-1 bg-gray-100 p-6 overflow-y-auto flex justify-center h-[95vh] relative">
+                <button
+                    onClick={() => setSelectedTemplateName(null)}
+                    className="absolute right-8 top-8 z-50 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition"
+                >
+                    <X className="w-5 h-5" />
+                </button>
+                
+                <div 
+                  style={{ width: 816 * MODAL_PREVIEW_SCALE, minHeight: 1056 * MODAL_PREVIEW_SCALE }}
+                  className="flex-shrink-0 max-w-full" 
+                >
+                  <TemplatePreview scale={MODAL_PREVIEW_SCALE} isCardPreview={false}>
+                    <TemplateComponent data={sampleResumeData} isEditing={false} />
+                  </TemplatePreview>
+                </div>
+              </div>
+
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </section>
   );
-};
+}; 
 
-export default TemplateShowcase;
+export default TemplateShowcase;  

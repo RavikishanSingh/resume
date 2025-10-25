@@ -612,45 +612,48 @@ const Index = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* LINKEDIN INTEGRATION CARD - COMMENTED OUT FOR FUTURE USE */}
-              {/* <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-blue-50 to-indigo-50 hover:scale-105 group">
-                <CardHeader className="pb-6">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                  </div>
-                  <CardTitle className="text-2xl mb-3">LinkedIn Integration</CardTitle>
-                  <CardDescription className="text-gray-600 text-base leading-relaxed">
-                    Import your professional information directly from LinkedIn with intelligent data extraction and automatic formatting.
-                  </CardDescription>
-                </CardHeader>
-              </Card> */}
+            {/* Centered Feature Cards Container */}
+            <div className="flex justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+                {/* LINKEDIN INTEGRATION CARD - COMMENTED OUT FOR FUTURE USE */}
+                {/* <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-blue-50 to-indigo-50 hover:scale-105 group">
+                  <CardHeader className="pb-6">
+                    <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                      <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
+                    </div>
+                    <CardTitle className="text-2xl mb-3">LinkedIn Integration</CardTitle>
+                    <CardDescription className="text-gray-600 text-base leading-relaxed">
+                      Import your professional information directly from LinkedIn with intelligent data extraction and automatic formatting.
+                    </CardDescription>
+                  </CardHeader>
+                </Card> */}
 
-              <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-purple-50 to-indigo-50 hover:scale-105 group">
-                <CardHeader className="pb-6">
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <Brain className="w-8 h-8 text-white" />
-                  </div>
-                  <CardTitle className="text-2xl mb-3">AI-Powered Analysis</CardTitle>
-                  <CardDescription className="text-gray-600 text-base leading-relaxed">
-                    Get instant feedback on grammar, tone, keywords, and job-specific optimization with advanced AI technology.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+                <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-purple-50 to-indigo-50 hover:scale-105 group">
+                  <CardHeader className="pb-6">
+                    <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                      <Brain className="w-8 h-8 text-white" />
+                    </div>
+                    <CardTitle className="text-2xl mb-3">AI-Powered Analysis</CardTitle>
+                    <CardDescription className="text-gray-600 text-base leading-relaxed">
+                      Get instant feedback on grammar, tone, keywords, and job-specific optimization with advanced AI technology.
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
 
-              <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-indigo-50 to-blue-50 hover:scale-105 group">
-                <CardHeader className="pb-6">
-                  <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <Star className="w-8 h-8 text-white" />
-                  </div>
-                  <CardTitle className="text-2xl mb-3">Professional Templates</CardTitle>
-                  <CardDescription className="text-gray-600 text-base leading-relaxed">
-                    Choose from 6 modern, ATS-friendly templates with real-time editing and industry-specific formatting.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+                <Card className="border-0 shadow-xl hover:shadow-2xl transition-all duration-500 bg-gradient-to-br from-indigo-50 to-blue-50 hover:scale-105 group">
+                  <CardHeader className="pb-6">
+                    <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                      <Star className="w-8 h-8 text-white" />
+                    </div>
+                    <CardTitle className="text-2xl mb-3">Professional Templates</CardTitle>
+                    <CardDescription className="text-gray-600 text-base leading-relaxed">
+                      Choose from 36 modern, ATS-friendly templates with real-time editing and industry-specific formatting.
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </div>
             </div>
 
             {/* Additional Features */}
@@ -681,6 +684,7 @@ const Index = () => {
         </div>
       </section>
 
+      
       {/* Enhanced CTA Section */}
       <section className="py-24 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 relative overflow-hidden">
       <div className="absolute inset-0 opacity-50" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpolygon points='50 0 60 40 100 50 60 60 50 100 40 60 0 50 40 40'/%3E%3C/g%3E%3C/svg%3E\")" }}></div>
@@ -702,18 +706,6 @@ const Index = () => {
                 Start From Scratch
                 <ArrowRight className="ml-3 w-5 h-5" />
               </Button>
-              {/* LINKEDIN INTEGRATION BUTTON - COMMENTED OUT FOR FUTURE USE */}
-              {/* <Button
-                size="lg"
-                variant="outline"
-                className="text-lg px-10 py-6 border-2 border-white text-foreground hover:bg-white hover:text-primary transition-all duration-300 transform hover:scale-105"
-                onClick={() => setShowLinkedInImport(true)}
-              >
-                <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-                Import from LinkedIn
-              </Button> */}
             </div>
           </div>
         </div>
